@@ -33,6 +33,15 @@ def object_function(x):
     return x**2 + x * jnp.sin(0.5*x**3) + 1.5*jnp.sin(5*x)
 '''
 
+def object_function(x):
+    return x**2 + jnp.exp(-x**4/1000)*(x * jnp.sin(0.5*x**3) + 1.5*jnp.sin(5*x)) + 2
+
+def smoothed_obj(x, eta):
+    y = 0
+    for i in range(100):
+        y += object_function(x+eta * np.random.randn())
+    return y/100
+
 def optimize(configs, opt, obj):
     list = []
     for i in tqdm(range(configs.sample_num)):
